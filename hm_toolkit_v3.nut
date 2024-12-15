@@ -6,6 +6,7 @@ include("hm_lib/hm_tunnel_tl")
 include("hm_lib/hm_slope_tl")
 include("hm_lib/hm_sign_tl")
 include("hm_lib/hm_station_tl")
+include("hm_lib/hm_depot_tl")
 include("hm_lib/hm_remove_tl")
 include("hm_lib/hm_find_obj")
 include("hm_lib/hm_misc_tl")
@@ -23,7 +24,7 @@ function work(pl, pos) {
   if(os.need_selection()) {
     return os.select_obj(pl, pos)
   }
-  
+
   // obj selection eneded or is not needed.
   foreach (cmd in hm_commands) {
     local err = cmd.exec(pl, pos)
@@ -36,5 +37,5 @@ function work(pl, pos) {
 
 function exit(pl)
 {
-	return true
+  return true
 }

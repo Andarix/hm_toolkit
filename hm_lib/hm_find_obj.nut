@@ -1,5 +1,5 @@
 include("hm_lib/lib_obj_finder_v2")
-  
+
 // get(key) returns [desc, start_pos, end_pos]
 class hm_found_desc {
   found_descs = {}
@@ -20,7 +20,7 @@ class hm_found_desc {
     return null
   }
 }
-  
+
 // key prefix: "w"
 function hm_find_way(key, start, end) {
   local desc = ObjFinder(player, [start, end]).findWay()
@@ -43,4 +43,10 @@ function hm_find_station(key, start, end) {
 function hm_find_wayobj(key, start, end) {
   local desc = ObjFinder(player, [start, end]).findWayObj()
   hm_found_desc().set("c" + key, desc, start, end)
+}
+
+// key prefix: "d"
+function hm_find_wayobj(key, start, end) {
+  local desc = ObjFinder(player, [start, end]).findDepot()
+  hm_found_desc().set("d" + key, desc, start, end)
 }

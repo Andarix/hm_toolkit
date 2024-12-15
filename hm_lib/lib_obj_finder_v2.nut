@@ -48,6 +48,7 @@ class ObjFinder {
     function findWay() {
         foreach(pos in _coord3dGenerator()) {
             local tile = tile_x(pos.x, pos.y, pos.z);
+            gui.add_message_at(player, "findWay() coord :" + coord3d_to_string(tile), world.get_time())
             local moWay = tile.find_object(mo_way);
 
             local hasOwnedWay = moWay && moWay.get_owner().get_name() == player.get_name();
@@ -56,6 +57,7 @@ class ObjFinder {
             }
         }
     }
+
 
     // 架線を指定座標空間から探す
     function findWayObj() {
@@ -106,6 +108,19 @@ class ObjFinder {
             local hasOwnedWay = obj && obj.get_owner().get_name() == player.get_name();
             if (hasOwnedWay) {
                 return obj;
+            }
+        }
+    }
+
+    // depot
+    function findDepot() {
+        foreach(pos in _coord3dGenerator()) {
+            local tile = tile_x(pos.x, pos.y, pos.z);
+            local moBld = tile.find_object(mo_depot);
+            local hasOwnedDepot = moBld &&
+                moBld.get_owner().get_name() == player.get_name();
+            if (hasOwnedDepot) {
+                return moBld.get_desc();
             }
         }
     }
