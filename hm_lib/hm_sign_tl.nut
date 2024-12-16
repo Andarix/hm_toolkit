@@ -11,34 +11,38 @@ class hm_sign_tl extends hm_base_tl {
     num_exec = num
     hm_commands.append(this)
   }
-  
+
   // returns [error_message, desc]
   function _get_desc(){
     if(desc_name.slice(0,2)=="?f") {
       local key_str = "s" + desc_name.slice(2)
       local d = hm_found_desc.get(key_str)
       if(d==null) {
-        return ["Sign key " + desc_name.slice(2) + " is not defined.", null]
+        local message = format(translate("Sign key %s is not defined."), desc_name.slice(2))
+        return [message, null]
       } else if(d[0]==null) {
-        return ["No sign was detected between " + hm_found_desc.get_pos_str(key_str), null]
+        local message = format(translate("No sign was detected between %s."), hm_found_desc.get_pos_str(key_str))
+        return [message, null]
       }
       return [null, d[0]]
     } else if(desc_name.slice(0,2)=="?s") {
       local idx = desc_name.slice(2).tointeger()
       local d = hm_sign_selector().get_desc(idx)
       if(d==null) {
-        return ["Selected sign "+desc_name.slice(2)+" is not available.", null]
+        local message = format(translate("Selected sign %s is not available."), desc_name.slice(2))
+        return [message, null]
       }
       return [null, d]
     } else {
       local d = hm_get_sign_desc(desc_name)
       if(d==null) {
-        return ["Sign " + desc_name + " is not found!", null]
+        local message = format(translate("Sign %s (%s) is not found!"), translate(desc_name), desc_name)
+        return [message, null]
       }
       return [null, d]
     }
   }
-  
+
   function exec(player, origin) {
     local dr = _get_desc()
     if(dr[0]!=null) {
@@ -51,7 +55,8 @@ class hm_sign_tl extends hm_base_tl {
       try {
         local err = command_x.build_sign_at(player, s_pos, desc)
       } catch(e) {
-        return "an error occured."
+        local message = format(translate("Error constructing signal on tile %s."), coord3d_to_string(s_pos))
+        return message
       }
     }
     return null

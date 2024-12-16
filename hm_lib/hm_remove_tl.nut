@@ -13,7 +13,8 @@ class hm_wayremove_tl extends hm_base_tl {
     local s_pos = origin + start
     local way = tile_x(s_pos.x, s_pos.y, s_pos.z).find_object(mo_way)
     if(way==null) {
-      return "No ways were found at " + s_pos.tostring()
+      local message = format(translate("No ways were found at %s."), coord3d_to_string(s_pos))
+      return [message, null]
     }
     local tl = command_x(tool_remove_way)
     return tl.work(player, origin+start, origin+ziel, way.get_waytype().tostring())

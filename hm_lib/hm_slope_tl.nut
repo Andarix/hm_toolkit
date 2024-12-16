@@ -13,7 +13,8 @@ class hm_slope_tl extends hm_base_tl {
     local tp = origin+pos
     local tile = square_x(tp.x, tp.y).get_ground_tile()
     if(tile.z!=tp.z || !tile.is_ground()) {
-      return "Tile " + tp.tostring() + " is not a valid ground!"
+      local message = format(translate("Tile %s is not a valid ground!"), coord3d_to_string(tp))
+      return [message, null]
     }
     return command_x.set_slope(player, tp, slope);
   }

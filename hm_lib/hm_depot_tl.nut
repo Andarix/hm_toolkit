@@ -23,16 +23,19 @@ class hm_depot_tl extends hm_base_tl {
       local key_str = "d" + desc_name.slice(2)
       local d = hm_found_desc.get(key_str)
       if(d==null) {
-        return ["Depot key " + desc_name.slice(2) + " is not defined.", null]
+        local message = format(translate("Depot key %s is not defined."), desc_name.slice(2))
+        return [message, null]
       } else if(d[0]==null) {
-        return ["No depot was detected between " + hm_found_desc.get_pos_str(key_str), null]
+        local message = format(translate("No depot was detected between %s."), hm_found_desc.get_pos_str(key_str))
+        return [message, null]
       }
       return [null, d[0]]
     } else if(desc_name.slice(0,2)=="?s") {
       local idx = desc_name.slice(2).tointeger()
       local d = hm_depot_selector().get_desc(idx)
       if(d==null) {
-        return ["Selected depot "+desc_name.slice(2)+" is not available.", null]
+        local message = format(translate("Selected depot %s is not available."), desc_name.slice(2))
+        return [message, null]
       }
       return [null, d]
     } else {
@@ -41,7 +44,8 @@ class hm_depot_tl extends hm_base_tl {
           return [null, d]
         }
       }
-      return ["Depot " + desc_name + " is not found!", null]
+      local message = format(translate("Depot %s (%s) is not found!"), translate(desc_name), desc_name)
+      return [message, null]
     }
   }
 

@@ -11,16 +11,18 @@ class hm_wayobj_tl extends hm_base_tl {
     ziel = coord3d(z[0],z[1],z[2])
     hm_commands.append(this)
   }
-  
+
   // returns [error_message, desc]
   function _get_desc(){
     if(desc_name.slice(0,2)=="?f") {
       local key_str = "c" + desc_name.slice(2)
       local d = hm_found_desc.get(key_str)
       if(d==null) {
-        return ["Wayobj key " + desc_name.slice(2) + " is not defined.", null]
+        local message = format(translate("Wayobj key %s is not defined."), desc_name.slice(2))
+        return [message, null]
       } else if(d[0]==null) {
-        return ["No wayobj was detected between " + hm_found_desc.get_pos_str(key_str), null]
+        local message = format(translate("No wayobj was detected between %s."), hm_found_desc.get_pos_str(key_str))
+        return [message, null]
       }
       return [null, d[0]]
     }
@@ -28,7 +30,8 @@ class hm_wayobj_tl extends hm_base_tl {
       local idx = desc_name.slice(2).tointeger()
       local d = hm_wayobj_selector().get_desc(idx)
       if(d==null) {
-        return ["Selected wayobj "+desc_name.slice(2)+" is not available.", null]
+        local message = format(translate("Selected wayobj %s is not available."), desc_name.slice(2))
+        return [message, null]
       }
       return [null, d]
     }
@@ -40,10 +43,11 @@ class hm_wayobj_tl extends hm_base_tl {
           }
         }
       }
-      return ["Wayobj " + desc_name + " is not found!", null]
+      local message = format(translate("Wayobj %s (%s) is not found!"), translate(desc_name), desc_name)
+      return [message, null]
     }
   }
-  
+
   function exec(player, origin) {
     local dr = _get_desc()
     if(dr[0]!=null) {
@@ -53,7 +57,8 @@ class hm_wayobj_tl extends hm_base_tl {
     local err = command_x.build_wayobj(player, origin+start, origin+ziel, desc)
     if(err!=null) {
       //calc_route() failed to find a path.
-      return "Wayobj building path from (" + (origin+start).tostring() + ") to (" + (origin+ziel).tostring() + ") is not found!"
+      local message = format(translate("Wayobj building path from ($s) to (%s) is not found!"), (origin+start).tostring(), (origin+ziel).tostring())
+      return [message, null]
     } else {
       return null
     }

@@ -16,23 +16,26 @@ class hm_station_tl extends hm_base_tl {
     }
     hm_commands.append(this)
   }
-  
+
   // returns [error_message, desc]
   function _get_desc(){
     if(desc_name.slice(0,2)=="?f") {
       local key_str = "p" + desc_name.slice(2)
       local d = hm_found_desc.get(key_str)
       if(d==null) {
-        return ["Station key " + desc_name.slice(2) + " is not defined.", null]
+        local message = format(translate("Station key %s is not defined."), desc_name.slice(2))
+        return [message, null]
       } else if(d[0]==null) {
-        return ["No station was detected between " + hm_found_desc.get_pos_str(key_str), null]
+        local message = format(translate("No station was detected between %s."), hm_found_desc.get_pos_str(key_str))
+        return [message, null]
       }
       return [null, d[0]]
     } else if(desc_name.slice(0,2)=="?s") {
       local idx = desc_name.slice(2).tointeger()
       local d = hm_station_selector().get_desc(idx)
       if(d==null) {
-        return ["Selected station "+desc_name.slice(2)+" is not available.", null]
+        local message = format(translate("Selected station %s is not available."), desc_name.slice(2))
+        return [message, null]
       }
       return [null, d]
     } else {
@@ -41,10 +44,11 @@ class hm_station_tl extends hm_base_tl {
           return [null, d]
         }
       }
-      return ["Station " + desc_name + " is not found!", null]
+      local message = format(translate("Station %s (%s) is not found!"), translate(desc_name), desc_name)
+      return [message, null]
     }
   }
-  
+
   function exec(player, origin) {
     local dr = _get_desc()
     if(dr[0]!=null) {

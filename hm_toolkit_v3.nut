@@ -15,7 +15,7 @@ include("hm_lib/hm_obj_selector")
 function init(pl) {
   this.player = pl
   hm_build()
-  gui.add_message_at(pl, hm_obj_selector().get_selection_message(), coord3d(0,0,0))
+  //gui.add_message_at(pl, hm_obj_selector().get_selection_message(), coord3d(0,0,0))
   return true
 }
 
