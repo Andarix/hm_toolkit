@@ -92,9 +92,9 @@ function hm_get_sign_desc(desc_name, wt) {
   } else {
     // set waytype
     // object not available then replace
-    local list = way_desc_x.get_available_signs(wt)
+    local list = sign_desc_x.get_available_signs(wt)
     foreach (s in list) {
-      if(w.get_name()==desc_name) {
+      if(s.get_name()==desc_name) {
         obj = s
         break
       }
@@ -145,3 +145,38 @@ function hm_get_wayobjs_desc(desc_name, wt, overhead) {
 
   return obj
 }
+
+function hm_get_building_desc(desc_name, wt, building_type) {
+  local obj   = null
+  local goods = {}
+
+  if ( wt == null ) {
+    // not set waytype
+    // object not found, break script
+    foreach(wt in hm_all_waytypes) {
+      foreach (b in building_desc_x.get_available_stations(building_type, wt, goods) ) {
+        if(b.get_name()==desc_name) {
+          obj = b
+          break
+        }
+      }
+    }
+  } else {
+    // set waytype
+    // object not available then replace
+    local list = building_desc_x.get_available_stations(building_type, wt, goods)
+    foreach (b in list) {
+      if(b.get_name()==desc_name) {
+        obj = b
+        break
+      }
+      if ( obj == null ) {
+        obj = b
+      }
+    }
+
+  }
+
+  return obj
+}
+
