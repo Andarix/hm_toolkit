@@ -1,5 +1,6 @@
 
 this.hm_all_waytypes <- [wt_road,wt_rail,wt_water,wt_monorail,wt_maglev,wt_tram,wt_narrowgauge,wt_air,wt_power]
+this.hm_all_systemtypes <- [st_flat, st_elevated, st_tram, st_runway]
 
 function hm_get_way_desc(desc_name, wt, st) {
   local obj = null
@@ -9,10 +10,11 @@ function hm_get_way_desc(desc_name, wt, st) {
     // not set waytype and/or systemtype
     // object not found, break script
     foreach(wt in hm_all_waytypes) {
-      foreach (st in [st_flat, st_elevated, st_tram, st_runway]) {
+      foreach (st in hm_all_systemtypes) {
         foreach (w in way_desc_x.get_available_ways(wt, st)) {
           if(w.get_name()==desc_name) {
             obj = w
+            break
           }
         }
       }
@@ -27,6 +29,7 @@ function hm_get_way_desc(desc_name, wt, st) {
       if(w.get_name()==desc_name) {
         obj = w
         //gui.add_message_at(player, "found desc_name " + obj.get_name(), world.get_time())
+        break
       }
       if ( obj == null ) {
         obj = w
@@ -49,16 +52,18 @@ function hm_get_bridge_desc(desc_name, wt) {
       foreach (b in bridge_desc_x.get_available_bridges(wt)) {
         if(b.get_name()==desc_name) {
           obj = b
+          break
         }
       }
     }
   } else {
-    // set waytype and systemtype
+    // set waytype
     // object not available then replace
-    local list = way_desc_x.get_available_bridges(wt)
+    local list = bridge_desc_x.get_available_bridges(wt)
     foreach (b in list) {
       if(b.get_name()==desc_name) {
         obj = b
+        break
       }
       if ( obj == null ) {
         obj = b
@@ -80,19 +85,59 @@ function hm_get_sign_desc(desc_name, wt) {
       foreach (s in sign_desc_x.get_available_signs(wt)) {
         if(s.get_name()==desc_name) {
           obj = s
+          break
         }
       }
     }
   } else {
-    // set waytype and systemtype
+    // set waytype
     // object not available then replace
     local list = way_desc_x.get_available_signs(wt)
     foreach (s in list) {
       if(w.get_name()==desc_name) {
         obj = s
+        break
       }
       if ( obj == null ) {
         obj = s
+      }
+    }
+
+  }
+
+  return obj
+}
+
+function hm_get_wayobjs_desc(desc_name, wt, overhead) {
+  local obj = null
+
+  if ( wt == null ) {
+    // not set waytype
+    // object not found, break script
+    foreach(wt in hm_all_waytypes) {
+      foreach (s in wayobj_desc_x.get_available_wayobjs(wt)) {
+        if(s.get_name()==desc_name) {
+          obj = s
+          break
+        }
+      }
+    }
+  } else {
+    // set waytype
+    // object not available then replace
+    local list = wayobj_desc_x.get_available_wayobjs(wt)
+    foreach (s in list) {
+      if(s.get_name()==desc_name) {
+        obj = s
+        break
+      }
+      if ( obj == null ) {
+        obj = s
+      } else if ( obj.get_topspeed() < 90 && s.get_topspeed() > 90 ) {
+        obj = s
+      }
+      if ( overhead == 1 && !obj.is_overhead_line() ) {
+        obj = null
       }
     }
 
