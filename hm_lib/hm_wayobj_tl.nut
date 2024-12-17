@@ -58,7 +58,7 @@ class hm_wayobj_tl extends hm_base_tl {
     if(err!=null) {
       //calc_route() failed to find a path.
       local message = format(translate("Wayobj building path from ($s) to (%s) is not found!"), (origin+start).tostring(), (origin+ziel).tostring())
-      return [message, null]
+      return message
     } else {
       return null
     }
