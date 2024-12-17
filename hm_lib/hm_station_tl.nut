@@ -4,6 +4,7 @@ class hm_station_tl extends hm_base_tl {
   desc = null
   desc_name = null
   pos = null
+
   constructor(sta_name, p) {
     desc_name = sta_name
     pos = coord3d(p[0],p[1],p[2])
